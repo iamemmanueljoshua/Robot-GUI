@@ -3,11 +3,10 @@ import picamera
 import logging
 import socketserver
 from threading import Condition
-from http.server import server
+from http import server
 
 PAGE="""\
 <html lang="en">
-
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8" />
@@ -16,8 +15,43 @@ PAGE="""\
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <title>Robot Webpage</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <style>
+        /* 
+         * Always set the map height explicitly to define the size of the div element
+         * that contains the map. 
+         */
+        #map {
+          height: 100%;
+        }
+        
+        /* 
+         * Optional: Makes the sample page fill the window. 
+         */
+        html,
+        body {
+          height: 100%;
+          margin: 0;
+          padding: 0;
+        }
+        
+        .custom-map-control-button {
+          background-color: #fff;
+          border: 0;
+          border-radius: 2px;
+          box-shadow: 0 1px 4px -1px rgba(0, 0, 0, 0.3);
+          margin: 10px;
+          padding: 0 0.5em;
+          font: 400 18px Roboto, Arial, sans-serif;
+          overflow: hidden;
+          height: 40px;
+          cursor: pointer;
+        }
+        .custom-map-control-button:hover {
+          background: rgb(235, 235, 235);
+        }
+    </style>
 </head>
-
 <body>
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar navbar-dark bg-dark">
@@ -297,7 +331,7 @@ class StreamingServer(socketserver.ThreadingMixIn, server.HTTPServer):
 with picamera.PiCamera(resolution='640x480', framerate=24) as camera:
     output = StreamingOutput()
     #Uncomment the next line to change your Pi's Camera rotation (in degrees)
-    camera.rotation = 180
+    #camera.rotation = 90
     camera.start_recording(output, format='mjpeg')
     try:
         address = ('', 8000)
